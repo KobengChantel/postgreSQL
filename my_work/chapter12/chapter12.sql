@@ -44,7 +44,7 @@ SELECT census.state_us_abbreviation AS st,
        round((plants.plant_count/census.st_population::numeric(10,1)) * 1000000, 1)
            AS plants_per_million
 FROM
-    (
+    (--calculate plants per state
          SELECT st,
                 count(*) AS plant_count
          FROM meat_poultry_egg_inspect
@@ -52,7 +52,7 @@ FROM
     )
     AS plants
 JOIN
-    (
+    (--calculate population per state
         SELECT state_us_abbreviation,
                sum(p0010001) AS st_population
         FROM us_counties_2010
@@ -61,6 +61,31 @@ JOIN
     AS census
 ON plants.st = census.state_us_abbreviation
 ORDER BY plants_per_million DESC;
+
+--breaking it up
+--creating  plants table
+SELECT plants.plant_count,
+       round((plants.plant_count/census.st_population::numeric(10,1)) * 1000000, 1)
+           AS plants_per_million
+           FROM(
+ SELECT st,
+                count(*) AS plant_count
+         FROM meat_poultry_egg_inspect
+         GROUP BY st
+           )AS plants
+--census table
+SELECT census.state_us_abbreviation AS st,
+census.st_population
+FROM(
+    SELECT state_us_abbreviation,
+               sum(p0010001) AS st_population
+        FROM us_counties_2010
+        GROUP BY state_us_abbreviation
+) AS census
+--joining
+SELECT SELECT census. st,
+census.st_population,
+plants.plant_count,
 
 -- Listing 12-5: Adding a subquery to a column list
 
@@ -154,16 +179,17 @@ ORDER BY count(*) DESC;
 -- Listing 12-8: Using CTEs in a table join
 
 WITH
+--temp table 1
     counties (st, population) AS
     (SELECT state_us_abbreviation, sum(population_count_100_percent)
      FROM us_counties_2010
      GROUP BY state_us_abbreviation),
-
+--temp table 2
     plants (st, plants) AS
     (SELECT st, count(*) AS plants
      FROM meat_poultry_egg_inspect
      GROUP BY st)
-
+--main query for the display
 SELECT counties.st,
        population,
        plants,
@@ -190,6 +216,7 @@ WHERE (p0010001 - us_median_pop)
 
 
 -- Cross tabulations
+--provide simple way to
 -- Install the crosstab() function via the tablefunc module
 
 CREATE EXTENSION tablefunc;
