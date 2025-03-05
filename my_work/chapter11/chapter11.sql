@@ -52,6 +52,7 @@ SELECT * FROM current_time_example;
 -- Listing 11-4: Showing your PostgreSQL server's default time zone
 
 SHOW timezone; -- Note: You can see all run-time defaults with SHOW ALL;
+SHOW ALL;
 
 -- Listing 11-5: Showing time zone abbreviations and names
 
@@ -65,6 +66,7 @@ WHERE name LIKE 'Europe%';
 -- Listing 11-6: Setting the time zone for a client session
 
 SET timezone TO 'US/Pacific';
+SHOW timezone;
 
 CREATE TABLE time_zone_test (
     test_date timestamp with time zone
@@ -75,6 +77,7 @@ SELECT test_date
 FROM time_zone_test;
 
 SET timezone TO 'US/Eastern';
+SHOW timezone;
 
 SELECT test_date
 FROM time_zone_test;
@@ -82,6 +85,8 @@ FROM time_zone_test;
 SELECT test_date AT TIME ZONE 'Asia/Seoul'
 FROM time_zone_test;
 
+SET timezone TO 'AFRICA/Johannesburg';
+SHOW timezone;
 
 -- Math with dates!
 

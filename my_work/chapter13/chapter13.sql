@@ -6,11 +6,15 @@
 -- Listing 13-1: Crime reports text
 
 -- Case formatting
+--capitalizes all alphabetical characters of a string passed to it
 SELECT upper('Neal7');
+--lowercases all alphabetical char-
+-- while keeping nonalphabet characters unchanged.
 SELECT lower('Randy');
+
 SELECT initcap('at the end of the day');
 
--- Note initcap's imperfect for acronyms
+-- Note initcap's imperfect for acronyms capitalizes the first letter of each word
 SELECT initcap('Practical SQL');
 
 -- Character Information

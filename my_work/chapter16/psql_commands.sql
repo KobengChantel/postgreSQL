@@ -20,6 +20,8 @@ psql -d analysis -U postgres
 -- Enter this at the psql prompt:
 
 SELECT geo_name FROM us_counties_2010 LIMIT 3;
+SELECT geo_name FROM us_counties_2010_shp LIMIT 3;
+
 
 -- Listing 16-2: Entering a multi-line query in psql
 -- Type each line separately, followed by Enter
