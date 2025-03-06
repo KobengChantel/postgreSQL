@@ -210,7 +210,7 @@ FROM crime_reports;
 
 SELECT geo_name
 FROM us_counties_2010
-WHERE geo_name ~* '(.+lade.+|.+lare.+)'
+WHERE geo_name ~* '(.+lade.+|.+lare.+)' --case insensitive
 ORDER BY geo_name;
 
 SELECT geo_name
