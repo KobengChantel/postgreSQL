@@ -9,6 +9,8 @@ CREATE OR REPLACE VIEW nevada_counties_pop_2010 AS
     WHERE state_us_abbreviation = 'NV'
     ORDER BY county_fips;
 
+SELECT * FROM public.us_counties_2010;
+SELECT * FROM public. nevada_counties_pop_2010;
 -- Listing 15-2: Querying the nevada_counties_pop_2010 view
 
 SELECT *
@@ -51,7 +53,7 @@ CREATE OR REPLACE VIEW employees_tax_dept AS
      FROM employees
      WHERE dept_id = 1
      ORDER BY emp_id
-     WITH LOCAL CHECK OPTION;
+     WITH LOCAL CHECK OPTION; --only allows chamges to the data when the WGERE clause has been met
 
 SELECT * FROM employees_tax_dept;
 
@@ -72,7 +74,7 @@ SELECT * FROM employees;
 
 UPDATE employees_tax_dept
 SET last_name = 'Le Gere'
-WHERE emp_id = 5;
+WHERE emp_id = 9;
 
 SELECT * FROM employees_tax_dept;
 
@@ -93,18 +95,22 @@ SELECT * FROM employees_tax_dept;
 -- Listing 15-9: Creating a percent_change function
 -- To delete this function: DROP FUNCTION percent_change(numeric,numeric,integer);
 
- CREATE OR REPLACE FUNCTION 
- percent_change(new_value numeric,
- old_value numeric,
- decimal_places integer DEFAULT 1)
+ -- This function calculates the percentage change between a new and an old value.
+-- It rounds the result to the specified number of decimal places.
+CREATE OR REPLACE FUNCTION 
+ percent_change(new_value numeric,  -- The new value in the calculation
+ old_value numeric,                 -- The old value in the calculation
+ decimal_places integer DEFAULT 1)  -- The number of decimal places to round to (default is 1)
  RETURNS numeric AS
  'SELECT round(
  ((new_value - old_value) / old_value) * 100, decimal_places
 );'
  LANGUAGE SQL
- IMMUTABLE
- RETURNS NULL ON NULL INPUT;
+ IMMUTABLE  -- Ensures the function always returns the same result for the same inputs
+ RETURNS NULL ON NULL INPUT;  -- Returns NULL if any input is NULL
 
+SELECT percentage_change(110, 108, 2);
+--round(110-108)/ 108*100,2;
 
 -- Listing 15-10: Testing the percent_change() function
 
@@ -155,6 +161,28 @@ SELECT update_personal_days();
 
 -- 
 -- SKIPPED 15.14 UNTIL 16 AS PYTHON IS NOT EORKING
+CREATE EXTENSION plpythonu;
+
+-- Listing 15-14: Enabling the PL/Python procedural language
+
+CREATE EXTENSION plpythonu;
+
+-- Listing 15-15: Using PL/Python to create the trim_county() function
+
+CREATE OR REPLACE FUNCTION trim_county(input_string text)
+RETURNS text AS $$
+    import re
+    cleaned = re.sub(r' County', '', input_string)
+    return cleaned
+$$ LANGUAGE plpythonu;
+
+-- Listing 15-16: Testing the trim_county() function
+
+SELECT geo_name,
+       trim_county(geo_name)
+FROM us_counties_2010
+ORDER BY state_fips, county_fips
+LIMIT 5;
 
 
 -- TRIGGERS
