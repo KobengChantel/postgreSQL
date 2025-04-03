@@ -1,32 +1,38 @@
--- Creating all  the tables
-
+-- Creating the zip_code table to store postal codes, cities, and provinces
 CREATE TABLE zip_code (
     zip_code VARCHAR(4) PRIMARY KEY,
     city VARCHAR(50) NOT NULL,
  province VARCHAR(50) NOT NULL,
+	-- Ensure zip code length does not exceed 4 characters
     CHECK (LENGTH(zip_code) <= 4)
 );
 Select * From zip_code;
+--dropping the table
 Drop Table zip_code;
 
+-- Creating the profession table to store different professions
 CREATE TABLE profession (
-    profession_id SERIAL PRIMARY KEY,
-    profession_name VARCHAR(100) UNIQUE NOT NULL
+    profession_id SERIAL PRIMARY KEY, -- Unique profession ID
+    profession_name VARCHAR(100) UNIQUE NOT NULL -- Profession name (unique)
 );
 Select * From  profession;
 
+-- Creating the status table to store different relationship statuses
 CREATE TABLE status (
-    status_id SERIAL PRIMARY KEY,
-    status_name VARCHAR(100) NOT NULL
+    status_id SERIAL PRIMARY KEY, -- Unique status ID
+    status_name VARCHAR(100) NOT NULL --Status name (e.g single, married)
 );
 Select * From  status;
 
+-- Creating the seeking table to store what people are looking for (e.g., friendship, networking)
 CREATE TABLE seeking (
-    seeking_id SERIAL PRIMARY KEY,
-    seeking_name VARCHAR(100) NOT NULL
+    seeking_id SERIAL PRIMARY KEY,  -- Unique seeking ID
+    seeking_name VARCHAR(100) NOT NULL -- Name of what they are seeking
 );
 Select * From  seeking;
 
+--A foreign key is a column (or a set of columns) in a table that establishes a link between the data in two tables. It references the primary key of another table, ensuring data consistency and enforcing referential integrity
+--Creating the my_contacts table to store personal contact details
 CREATE TABLE my_contacts (
     contact_id SERIAL PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
@@ -44,12 +50,14 @@ CREATE TABLE my_contacts (
 );
 Select * From  my_contacts;
 
+--Creating the interests table to store different interests people have
 CREATE TABLE interests (
     interest_id SERIAL PRIMARY KEY,
     interest_name VARCHAR(100) NOT NULL
 );
 Select * From   interests;
 
+--Creating a junction table to store many-to-many relationship between contacts and interests
 CREATE TABLE contact_interest (
     contact_id INT,
     interest_id INT,
@@ -59,6 +67,7 @@ CREATE TABLE contact_interest (
 );
 Select * From  contact_interest ;
 
+--Creating a junction table to store many-to-many relationship between contacts and seeking
 CREATE TABLE contact_seeking (
     contact_id INT,
     seeking_id INT,
@@ -69,7 +78,6 @@ CREATE TABLE contact_seeking (
 Select * From  contact_seeking;
 
 -- Insert data into zip_code table
-
 INSERT INTO zip_code (zip_code, city, province) VALUES
 ('1001', 'City1', 'Province1'),
 ('1002', 'City2', 'Province1'),
@@ -91,7 +99,6 @@ INSERT INTO zip_code (zip_code, city, province) VALUES
 ('9002', 'City18', 'Province9');
 
 -- Insert data into profession table
-
 INSERT INTO profession (profession_name) VALUES
 ('Engineer'),
 ('Doctor'),
@@ -100,21 +107,18 @@ INSERT INTO profession (profession_name) VALUES
 ('Lawyer');
 
 -- Insert data into status table
-
 INSERT INTO status (status_name) VALUES
 ('Single'),
 ('Married'),
 ('Divorced');
 
 -- Insert data into seeking table
-
 INSERT INTO seeking (seeking_name) VALUES
 ('Friendship'),
 ('Networking'),
 ('Romance');
 
 -- Insert data into my_contacts table
-
 INSERT INTO my_contacts (first_name, last_name, phone, email, gender, birthday, profession_id, zip_code, status_id) VALUES
 ('John', 'Doe', '555-1234', 'john@example.com', 'Male', '1990-01-01', 1, '1001', 1),
 ('Jane', 'Smith', '555-5678', 'jane@example.com', 'Female', '1985-05-15', 2, '2001', 2),
@@ -133,14 +137,12 @@ INSERT INTO my_contacts (first_name, last_name, phone, email, gender, birthday, 
 ('Mia', 'Robinson', '555-8762', 'mia@example.com', 'Female', '1990-03-18', 5, '6002', 1);
 
 -- Insert data into interests table
-
 INSERT INTO interests (interest_name) VALUES
 ('Sports'),
 ('Music'),
 ('Reading'),
 ('Traveling'),
 ('Cooking');
-
 
 
 -- Assign exactly 2 interests per contact
@@ -188,6 +190,7 @@ INSERT INTO contact_seeking (contact_id, seeking_id) VALUES
 Select * From contact_seeking;
 
 -- LEFT JOIN query to fetch the required data
+--Query to retrieve all details of a contact including profession, zip code, status, interests, and seeking
 SELECT 
     p.profession_name AS profession,
     z.zip_code, z.city, z.province,

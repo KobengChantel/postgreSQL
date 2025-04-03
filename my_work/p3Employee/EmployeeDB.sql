@@ -1,4 +1,5 @@
---Create department table
+--Create the Department Table
+-- The Department table stores information about the various departments in the company.
 CREATE TABLE Department (
 	depart_id integer PRIMARY KEY,
 	depart_name VARCHAR(255) NOT NULL,
@@ -6,7 +7,8 @@ CREATE TABLE Department (
 );
 SELECT * FROM Department;
 
---Create Employees Table
+-- Create the Employees Table
+-- This table stores employee information and references the Department table.
 CREATE TABLE Employees (
 	emp_id integer PRIMARY KEY,
 	first_name VARCHAR(255) NOT NULL,
@@ -24,15 +26,17 @@ Select * from Employees;
 Drop Table Employees;
 
 --Create Role table
+--The Roles table stores information about the different roles employees can have.
 CREATE TABLE Roles(
 	role_id INT PRIMARY KEY,
     roles VARCHAR(50) NOT NULL
 	
 );
 Select * From Roles;
-Drop Table Roles;
+--Drop Table Roles;
 
 --Create Table for salaries
+--This table stores salary details for each employee.
 CREATE TABLE Salaries (
     salary_id integer PRIMARY KEY,
     emp_id integer,
@@ -43,6 +47,7 @@ CREATE TABLE Salaries (
 Select * From salaries;
 
 -- Create Overtimes Table
+-- This table stores overtime hours for each employee.
 CREATE TABLE Overtimes (
     overtime_id INT PRIMARY KEY,
     emp_id INT,
@@ -52,14 +57,13 @@ CREATE TABLE Overtimes (
 Select * from Overtimes;
 
 --STEP 3 INSERTING DATA
-
--- Insert into Departments
+-- Inserting data into Departments
 INSERT INTO Department (depart_id, depart_name) VALUES
 (1, 'HR'),
 (2, 'Engineering'),
 (3, 'Sales');
 
--- Insert into Employees
+-- Inserting data into Employees
 INSERT INTO Employees (emp_id, first_name, surname, gender, address, email, depart_id, role_id, salary, overtime)
 VALUES (1, 'Alice', 'Smith', 'F', '123 Main St', 'alice@example.com', 1, 1, 50000, 10);
 
@@ -71,23 +75,24 @@ VALUES (3, 'Jane', 'Doe', 'F', '789 Oak St', 'jane@example.com', 1, 3, 55000, 12
 
 Select * from Employees;
 
--- Insert into Role
+-- Inserting data into Role
 INSERT INTO roles (role_id, roles) VALUES
 (1, 'Manager'),
 (2, 'Developer'),
 (3, 'Salesperson');
 Select * from Roles;
 
+--Inserting data into salaries
 INSERT INTO Salaries (salary_id, emp_id, role_id, salary)
 VALUES 
 (1, 1, 1, 75000.00),
 (2, 2, 2, 80000.00),
 (3, 3, 3, 50000.00);
 
-DROP TABLE Salaries;
+--DROP TABLE Salaries;
 Select * from Salaries;
 
--- Insert into Overtimes
+-- Inserting data into Overtimes
 INSERT INTO Overtimes (overtime_id, emp_id, overtime_hours) VALUES
 (1, 1, 10.5),
 (2, 2, 5.0),
@@ -96,6 +101,8 @@ Select * From Overtimes;
 
 
 --Step 4: LEFT JOIN Query
+--LEFT JOIN Query for Department, Role, Salary, and Overtime Information
+-- Using LEFT JOIN to combine employee, department, salary, role, and overtime data.
 --Shorten table and column names, making the query easier to write and read.
 --Aliases (e, d, s, j, o) are used consistently and appropriately to reference the tables
 --To display department name, job title, salary figure, and overtime hours worked, you can use the following LEFT JOIN query

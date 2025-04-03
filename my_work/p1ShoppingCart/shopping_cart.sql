@@ -1,20 +1,20 @@
 
-
--- Products Menu Table
+-- Create ProductsMenu Table to store variable products
 CREATE TABLE ProductsMenu (
-    Id INT PRIMARY KEY,
-    Name VARCHAR(50),
-    Price DECIMAL(10, 2)
+    Id INT PRIMARY KEY, -- Product identifier
+    Name VARCHAR(50),  -- Product name
+    Price DECIMAL(10, 2)    -- Product price
 );
 
+--Insert some sample products into the ProductsMenu table
 INSERT INTO ProductsMenu (id, name, price)
 VALUES
-    (1, 'Coke', 10),
+    (1, 'Coke', 10), --id name price
     (2, 'Chips', 5);
 Select * From ProductsMenu;
 
 
--- Cart Table
+--  Create Cart table to store products added to the cart
 CREATE TABLE Cart (
     ProductId INT PRIMARY KEY,
     Qty INT,
@@ -28,35 +28,35 @@ CREATE TABLE Cart (
 -- Select * From Cart;
 -- Drop Table Cart;
 
--- Users Table
+-- Create Users table to store user information
 CREATE TABLE Users (
     User_ID INT PRIMARY KEY,
     Username VARCHAR(50)
 );
 
+-- Insert some sample users into the Users table
 INSERT INTO Users (User_ID, Username)
 VALUES
-    (1, 'Arnold'),
-    (2, 'Sheryl');
+    (1, 'Chantel'),
+    (2, 'Preshly');
 Select * From Users;
 
-
-
--- OrderHeader Table
+-- Create OrderHeader table to store order details
 CREATE TABLE OrderHeader (
     OrderID INT PRIMARY KEY,
     User_ID INT,
     OrderDate TIMESTAMP,
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
 );
+
+--Insert somemple orders into the OrderHeader table
 INSERT INTO OrderHeader (OrderID, User_ID, OrderDate)
 VALUES
     (1, 2, '2015-04-15 15:30:00'),
     (2, 1, '2015-04-16 16:00:00'); 
 Select * From OrderHeader;
 
-
--- OrderDetails Table
+-- Create OrderDetails table to store the products in each order
 CREATE TABLE OrderDetails (
     OrderID INT,
     ProductId INT,
@@ -65,6 +65,8 @@ CREATE TABLE OrderDetails (
     FOREIGN KEY (OrderID) REFERENCES OrderHeader(OrderID),
     FOREIGN KEY (ProductId) REFERENCES ProductsMenu(Id)
 );
+
+-- Insert some sample products into the OrderDetails table for the orders
 INSERT INTO OrderDetails (OrderID, ProductId, Qty)
 VALUES
     (1, 1, 2),  
@@ -73,7 +75,6 @@ VALUES
 Select * From OrderDetails;
 
 --ADDING TO THE CART
-
 -- Add a Coke (Product ID 1)
 DO $$
 BEGIN
