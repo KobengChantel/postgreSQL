@@ -37,8 +37,8 @@ CREATE TABLE Users (
 -- Insert some sample users into the Users table
 INSERT INTO Users (User_ID, Username)
 VALUES
-    (1, 'Chantel'),
-    (2, 'Preshly');
+    (1, 'Arnold'),
+    (2, 'Sheryl');
 Select * From Users;
 
 -- Create OrderHeader table to store order details
@@ -53,7 +53,8 @@ CREATE TABLE OrderHeader (
 INSERT INTO OrderHeader (OrderID, User_ID, OrderDate)
 VALUES
     (1, 2, '2015-04-15 15:30:00'),
-    (2, 1, '2015-04-16 16:00:00'); 
+    (2, 1, '2015-04-16 16:00:00'),
+	(6, 5, '2025-04-04 17:06:08');
 Select * From OrderHeader;
 
 -- Create OrderDetails table to store the products in each order
@@ -71,7 +72,8 @@ INSERT INTO OrderDetails (OrderID, ProductId, Qty)
 VALUES
     (1, 1, 2),  
     (1, 2, 1), 
-    (2, 1, 1);  
+    (2, 1, 1),
+	(6, 5, 1);
 Select * From OrderDetails;
 
 --ADDING TO THE CART
@@ -111,63 +113,94 @@ END $$;
 Select * From Cart;
 
 
+--ADDING TO THE CART  Sample Test
+-- Add a Coke (Product ID 6)
+DO $$
+BEGIN
+    -- Check if the product already exists in the Cart
+    IF EXISTS (SELECT 1 FROM Cart WHERE ProductId = 6) THEN
+        -- Update quantity if it exists
+        UPDATE Cart
+        SET Qty = Qty + 1
+        WHERE ProductId = 6;
+    ELSE
+        -- Insert a new record if it does not exist
+        INSERT INTO Cart (ProductId, Qty)
+        VALUES (6, 1);
+    END IF;
+END $$;
+Select * From Cart;
+
 -- REMOVING FROM THE CART
 -- Remove an item from the cart (Product ID 1)
--- DO $$
--- BEGIN
---     -- Check if the product exists in the Cart
---     IF EXISTS (SELECT 1 FROM Cart WHERE ProductId = 1) THEN
---         -- Check the quantity of the product
---         IF (SELECT Qty FROM Cart WHERE ProductId = 1) > 1 THEN
---             -- Decrease the quantity by 1
---             UPDATE Cart
---             SET Qty = Qty - 1
---             WHERE ProductId = 1;
---         ELSE
---             -- Remove the item from the Cart if quantity is 1 or less
---             DELETE FROM Cart
---             WHERE ProductId = 1;
---         END IF;
---     END IF;
--- END $$;
+DO $$
+BEGIN
+    -- Check if the product exists in the Cart
+    IF EXISTS (SELECT 1 FROM Cart WHERE ProductId = 1) THEN
+        -- Check the quantity of the product
+        IF (SELECT Qty FROM Cart WHERE ProductId = 1) > 1 THEN
+            -- Decrease the quantity by 1
+            UPDATE Cart
+            SET Qty = Qty - 1
+            WHERE ProductId = 1;
+        ELSE
+            -- Remove the item from the Cart if quantity is 1 or less
+            DELETE FROM Cart
+            WHERE ProductId = 1;
+        END IF;
+    END IF;
+END $$;
 
--- DO $$
--- DECLARE
---     current_qty INT;
--- BEGIN
---     -- Check if the product exists in the Cart
---     IF EXISTS (SELECT 1 FROM Cart WHERE ProductId = 1) THEN
---         -- Get the current quantity
---         SELECT Qty INTO current_qty FROM Cart WHERE ProductId = 1;
-        
---         -- Output the current quantity for debugging
---         RAISE NOTICE 'Current quantity for ProductId = 1: %', current_qty;
-        
---         -- Check the quantity of the product
---         IF current_qty > 1 THEN
---             -- Decrease the quantity by 1
---             UPDATE Cart
---             SET Qty = Qty - 1
---             WHERE ProductId = 1;
---             RAISE NOTICE 'Updated quantity for ProductId = 1 to %', current_qty - 1;
---         ELSE
---             -- Remove the item from the Cart if quantity is 1 or less
---             DELETE FROM Cart
---             WHERE ProductId = 1;
---             RAISE NOTICE 'Deleted ProductId = 1 from Cart';
---         END IF;
---     ELSE
---         RAISE NOTICE 'ProductId = 1 not found in Cart';
---     END IF;
--- END $$;
+--Remove an item from the cart (Product ID 1)
+DO $$
+BEGIN
+    -- Check if the product exists in the Cart
+    IF EXISTS (SELECT 2 FROM Cart WHERE ProductId = 2) THEN
+        -- Check the quantity of the product
+        IF (SELECT Qty FROM Cart WHERE ProductId = 2) > 2 THEN
+            -- Decrease the quantity by 1
+            UPDATE Cart
+            SET Qty = Qty - 1
+            WHERE ProductId = 2;
+        ELSE
+            -- Remove the item from the Cart if quantity is 1 or less
+            DELETE FROM Cart
+            WHERE ProductId = 2;
+        END IF;
+    END IF;
+END $$;
 
--- Select * from Cart;
+Select * from Cart;
+
+--Remove an item from the cart (Product ID 6 SAMPLE)
+DO $$
+BEGIN
+    -- Check if the product exists in the Cart
+    IF EXISTS (SELECT 2 FROM Cart WHERE ProductId = 6) THEN
+        -- Check the quantity of the product
+        IF (SELECT Qty FROM Cart WHERE ProductId = 6) > 2 THEN
+            -- Decrease the quantity by 1
+            UPDATE Cart
+            SET Qty = Qty - 1
+            WHERE ProductId = 6;
+        ELSE
+            -- Remove the item from the Cart if quantity is 1 or less
+            DELETE FROM Cart
+            WHERE ProductId = 6;
+        END IF;
+    END IF;
+END $$;
 
 -- 5. Checkout to Place the Order
 
 INSERT INTO OrderHeader (OrderID, User_ID, OrderDate) VALUES (2, 2, '2024-08-22 15:30:00');
+--SAMPLE
+INSERT INTO OrderHeader (OrderID, User_ID, OrderDate) VALUES (6, 5, '2024-08-22 15:30:00');
 
 -- Insert Cart Items into OrderDetails
+INSERT INTO OrderDetails (OrderID, ProductId, Qty)
+SELECT 1, ProductId, Qty FROM Cart;
+--SAMPLE
 INSERT INTO OrderDetails (OrderID, ProductId, Qty)
 SELECT 1, ProductId, Qty FROM Cart;
 
@@ -178,6 +211,10 @@ Select * From Cart;
 --Shopping Experience
 -- Add Coke (Product ID 1)
 INSERT INTO Cart (ProductId, Qty) VALUES (1, 1)
+ON CONFLICT (ProductId) 
+DO UPDATE SET Qty = Cart.Qty + 1;
+--SAMPLE
+INSERT INTO Cart (ProductId, Qty) VALUES (6, 1)
 ON CONFLICT (ProductId) 
 DO UPDATE SET Qty = Cart.Qty + 1;
 
@@ -201,15 +238,28 @@ BEGIN
         END IF;
     END IF;
 END $$;
-
+--SAMPLE
+DO $$
+BEGIN
+    IF EXISTS (SELECT 5 FROM Cart WHERE ProductId = 6) THEN
+        IF (SELECT Qty FROM Cart WHERE ProductId = 6) > 5 THEN
+            UPDATE Cart SET Qty = Qty - 1 WHERE ProductId = 6;
+        ELSE
+            DELETE FROM Cart WHERE ProductId = 6;
+        END IF;
+    END IF;
+END $$;
 
 --deleting from cart
 -- Delete Coke (Product ID 1)
 DELETE FROM Cart WHERE ProductId = 1;
+--SAMPLE
+DELETE FROM Cart WHERE ProductId = 6;
+
 
 -- Select statement to show the updated Cart
--- Delete Coke (Product ID 1)
-DELETE FROM Cart WHERE ProductId = 1;
+-- Delete Chips (Product ID 2)
+DELETE FROM Cart WHERE ProductId = 2;
 
 -- Select statement to show the updated Cart
 SELECT * FROM Cart;
@@ -225,7 +275,7 @@ SELECT 2, ProductId, Qty FROM Cart;
 -- Delete Cart Contents
 DELETE FROM Cart;
 
--- Example of selecting orders with inner joins
+--selecting orders with inner joins
 SELECT o.OrderID, u.Username, o.OrderDate, p.Name, od.Qty
 FROM OrderDetails od
 JOIN OrderHeader o ON od.OrderID = o.OrderID
@@ -248,7 +298,7 @@ FROM OrderDetails od
 JOIN OrderHeader o ON od.OrderID = o.OrderID
 JOIN Users u ON o.User_ID = u.User_ID
 JOIN ProductsMenu p ON od.ProductId = p.Id
-WHERE DATE(o.OrderDate) = '2024-08-22';
+WHERE DATE(o.OrderDate) = '2015-04-15';
 
 -- Bonus: Functions
 -- Add Item Function:

@@ -8,7 +8,7 @@ CREATE TABLE zip_code (
 );
 Select * From zip_code;
 --dropping the table
-Drop Table zip_code;
+-- Drop Table zip_code;
 
 -- Creating the profession table to store different professions
 CREATE TABLE profession (
@@ -96,7 +96,8 @@ INSERT INTO zip_code (zip_code, city, province) VALUES
 ('8001', 'City15', 'Province8'),
 ('8002', 'City16', 'Province8'),
 ('9001', 'City17', 'Province9'),
-('9002', 'City18', 'Province9');
+('9002', 'City18', 'Province9'),
+('12345', 'City19', 'Province0');
 
 -- Insert data into profession table
 INSERT INTO profession (profession_name) VALUES
@@ -104,7 +105,8 @@ INSERT INTO profession (profession_name) VALUES
 ('Doctor'),
 ('Artist'),
 ('Teacher'),
-('Lawyer');
+('Lawyer'),
+('Engineer');
 
 -- Insert data into status table
 INSERT INTO status (status_name) VALUES
@@ -134,7 +136,10 @@ INSERT INTO my_contacts (first_name, last_name, phone, email, gender, birthday, 
 ('Jack', 'Harris', '555-3456', 'jack@example.com', 'Male', '1985-11-11', 2, '3002', 2),
 ('Karen', 'Clark', '555-7654', 'karen@example.com', 'Female', '1991-10-10', 3, '4002', 1),
 ('Leo', 'Lewis', '555-1235', 'leo@example.com', 'Male', '1987-01-12', 4, '5002', 2),
-('Mia', 'Robinson', '555-8762', 'mia@example.com', 'Female', '1990-03-18', 5, '6002', 1);
+('Mia', 'Robinson', '555-8762', 'mia@example.com', 'Female', '1990-03-18', 5, '6002', 1),
+('Lad', 'Person', '555-0000', 'lad@example.com', 'Male', '1990-01-01', 99, '1001', 1), --non existing profession id
+('Error', 'Person2', '555-0001', 'error2@example.com', 'Female', '1990-01-01', 1, '9999', 1); --non-exist zipcode
+
 
 -- Insert data into interests table
 INSERT INTO interests (interest_name) VALUES
@@ -167,7 +172,9 @@ INSERT INTO contact_interest (contact_id, interest_id) VALUES
 (12, 4),
 (13, 1),
 (14, 2),
-(15, 3);
+(15, 3),
+(99,1), --contactid
+(1,99); --contactInterest
 Select * From contact_interest;
 
 -- Insert exactly 1 seeking per contact
@@ -186,7 +193,8 @@ INSERT INTO contact_seeking (contact_id, seeking_id) VALUES
 (12, 3),
 (13, 1),
 (14, 2),
-(15, 3);
+(15, 3),
+(100,51); --test
 Select * From contact_seeking;
 
 -- LEFT JOIN query to fetch the required data

@@ -61,7 +61,8 @@ Select * from Overtimes;
 INSERT INTO Department (depart_id, depart_name) VALUES
 (1, 'HR'),
 (2, 'Engineering'),
-(3, 'Sales');
+(3, 'Sales'),
+(1, 'Manager');
 
 -- Inserting data into Employees
 INSERT INTO Employees (emp_id, first_name, surname, gender, address, email, depart_id, role_id, salary, overtime)
@@ -73,13 +74,16 @@ VALUES (2, 'John', 'Doe', 'M', '456 Elm St', 'john@example.com', 2, 2, 60000, 15
 INSERT INTO Employees (emp_id, first_name, surname, gender, address, email, depart_id, role_id, salary, overtime)
 VALUES (3, 'Jane', 'Doe', 'F', '789 Oak St', 'jane@example.com', 1, 3, 55000, 12);
 
+ INSERT INTO Employees (emp_id, first_name, surname, gender, address, email, depart_id, role_id, salary, overtime) VALUES
+ (4, 'Matrar', 'Person', 'M', '789 Koast St', 'Matrar@example.com', 99, 1, 60000, 5);
 Select * from Employees;
 
 -- Inserting data into Role
 INSERT INTO roles (role_id, roles) VALUES
 (1, 'Manager'),
 (2, 'Developer'),
-(3, 'Salesperson');
+(3, 'Salesperson'),
+(2, 'Developer');
 Select * from Roles;
 
 --Inserting data into salaries
@@ -87,7 +91,8 @@ INSERT INTO Salaries (salary_id, emp_id, role_id, salary)
 VALUES 
 (1, 1, 1, 75000.00),
 (2, 2, 2, 80000.00),
-(3, 3, 3, 50000.00);
+(3, 3, 3, 50000.00),
+(15,18,30, 12000.00);
 
 --DROP TABLE Salaries;
 Select * from Salaries;
