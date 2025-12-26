@@ -12,6 +12,7 @@ CREATE TABLE animal_types (
    common_name varchar(100) NOT NULL,
    scientific_name varchar(100) NOT NULL,
    conservation_status varchar(50) NOT NULL
+                          klmm
 );
 
 Select * From animal_types;
